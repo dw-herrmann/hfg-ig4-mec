@@ -7,6 +7,7 @@ void setup()
 {
   pinMode(motor, OUTPUT);
   pinMode(relay, OUTPUT);
+  // test
 }
 
 void loop()
