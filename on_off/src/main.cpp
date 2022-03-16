@@ -2,29 +2,40 @@
 int motor = 8;
 int relay = 10;
 int direction = false;
+int EndlageL = false;
+int EndlageR = false;
+int counter = 0;
+int sensorValue = analogRead(A0);
 
 void setup()
 {
+  Serial.begin(9600);
   pinMode(motor, OUTPUT);
   pinMode(relay, OUTPUT);
-  // test
 }
 
 void loop()
 {
-  // anschalten
+  // Sensor auslesen
+  sensorValue = analogRead(A0);
+  Serial.println(sensorValue);
+
+  // Motor betätigen
   digitalWrite(motor, HIGH);
 
-  // 3000 ms
-  delay(3000);
+  // 1. stoppen, 2.umdrehen und 3. wieder starten
+  if (sensorValue >= 670 || sensorValue <= 414)
+  {
+    // 1. stoppen
+    digitalWrite(motor, false);
 
-  // ausschalten
-  digitalWrite(motor, LOW);
+    // 2. umdrehen
+    direction = !direction;
+    digitalWrite(relay, direction);
+    delay(500);
 
-  // 100 ms delay
-  delay(500);
-
-  // direction umschalten und relay ansprechen
-  direction = !direction;
-  digitalWrite(relay, direction);
+    // 3. wieder starten
+    digitalWrite(motor, true);
+    delay(500);
+  }
 }
