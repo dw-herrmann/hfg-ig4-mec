@@ -22,7 +22,7 @@ void loop()
   digitalWrite(motor, LOW);
 
   // 100 ms delay
-  delay(100);
+  delay(500);
 
   // direction umschalten und relay ansprechen
   direction = !direction;
