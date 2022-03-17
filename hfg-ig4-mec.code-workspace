@@ -6,6 +6,10 @@
 		{
 			"name": "on_off",
 			"path": "on_off"
+		},
+		{
+			"name": "follow_light",
+			"path": "follow_light"
 		}
 	],
 	"settings": {}
