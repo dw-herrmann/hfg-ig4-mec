@@ -29,19 +29,23 @@ void loop()
   LDRLeft = analogRead(A1);
   LDRRight = analogRead(A2);
 
+  // Werte vergleichen
+  difference = LDRLeft - LDRRight;
+
   Serial.print(sensorValue);
 
-  Serial.print("L=");
+  Serial.print(" L=");
   Serial.print(analogRead(A1));
   Serial.print("  \t// R=");
   Serial.print(analogRead(A2));
 
   Serial.print("  \t// D=");
-  // grüner bereich
-  if (sensorValue >= endLeft + 20 || sensorValue <= endRight - 20)
+
+  // ---- ---- ---- ---- //
+  // -- Grüner Bereich - //
+  // ---- ---- ---- ---- //
+  if (sensorValue > endLeft + 20 && sensorValue < endLeft - 20)
   {
-    // Werte vergleichen
-    difference = LDRLeft - LDRRight;
 
     if (abs(difference) > 5)
     { // Schwellwert erreicht
@@ -71,36 +75,40 @@ void loop()
       Serial.print("static");
     }
   }
-  // gelber Bereich
-  else if (
-      // falls in Wertebereich left
-      sensorValue >= (endLeft + 20) && sensorValue <= (endLeft))
+  // ---- ---- ---- ---- //
+  // -- Gelber Bereich - //
+  // ---- ---- ---- ---- //
+  else if (sensorValue > endLeft && sensorValue < endLeft) // falls in Wertebereich left
   {
-    Serial.print("toFarL");
-    if (direction == true) // richtung rechts (true), dann starten, ansonsten anhalten
+    if (sensorValue < endLeft + 20)
     {
-      // digitalWrite(motor, true);
+      Serial.print("toFarL");
+
+      if (direction == true) // nach rechts (true) starten
+      {
+        // digitalWrite(motor, true);
+      }
+      else // ansonsten anhalten
+      {
+        // digitalWrite(motor, false);
+      }
     }
-    else
+    else if (sensorValue > endLeft - 20)
     {
-      // digitalWrite(motor, false);
+      Serial.print("toFarR");
+      if (direction == false) // nach links (false) starten
+      {
+        // digitalWrite(motor, true);
+      }
+      else // ansonsten anhalten
+      {
+        // digitalWrite(motor, false);
+      }
     }
   }
-  else if (
-      // falls in Wertebereich right
-      sensorValue >= (endRight - 20) && sensorValue <= (endRight))
-  {
-    Serial.print("toFarR");
-    if (direction == false) // richtung links (false), dann starten, ansonsten anhalten
-    {
-      // digitalWrite(motor, true);
-    }
-    else
-    {
-      // digitalWrite(motor, false);
-    }
-  }
-  // roter Bereich
+  // ---- ---- ---- ---- //
+  // -- Roter Bereich - //
+  // ---- ---- ---- ---- //
   else
   {
     // digitalWrite(motor, false);
