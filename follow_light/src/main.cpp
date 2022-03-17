@@ -43,31 +43,31 @@ void loop()
     // Werte vergleichen
     difference = LDRLeft - LDRRight;
 
-    if (abs(difference) > 15)
+    if (abs(difference) > 5)
     { // Schwellwert erreicht
 
       if (LDRLeft > LDRRight)
       { // links ist heller
         // Switch an, richtung links
         Serial.print("toL");
-        direction = false;
+        direction = true;
       }
       else
       { // rechts ist heller
         // Switch aus, richtung rechts
         Serial.print("toR");
-        direction = true;
+        direction = false;
       }
 
       digitalWrite(relay, direction);
 
       // Motor betätigen
-      // digitalWrite(motor, true);
+      digitalWrite(motor, true);
     }
     else
     // guckt schon auf hellsten Punkt
     {
-      // digitalWrite(motor, false);
+      digitalWrite(motor, false);
       Serial.print("static");
     }
   }
