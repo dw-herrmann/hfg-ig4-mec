@@ -20,7 +20,9 @@ void loop()
   sensorValue = analogRead(A0);
   // Serial.println(sensorValue);
   Serial.print("A1 = ");
-  Serial.println(analogRead(A1));
+  Serial.print(analogRead(A1));
+  Serial.print("  \t// A2 = ");
+  Serial.println(analogRead(A2));
 
   // Motor betätigen
   digitalWrite(motor, HIGH);
