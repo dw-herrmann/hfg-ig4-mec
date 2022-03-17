@@ -2,10 +2,18 @@
 int motor = 8;
 int relay = 10;
 int direction = false;
+// left = false
+// right = true
 int EndlageL = false;
 int EndlageR = false;
 int counter = 0;
 int sensorValue = analogRead(A0);
+int LDRLeft = analogRead(A1);
+int LDRRight = analogRead(A2);
+int endLeft = 414;
+int endRight = 670;
+
+int difference;
 
 void setup()
 {
@@ -18,29 +26,85 @@ void loop()
 {
   // Sensor auslesen
   sensorValue = analogRead(A0);
-  // Serial.println(sensorValue);
-  Serial.print("A1 = ");
+  LDRLeft = analogRead(A1);
+  LDRRight = analogRead(A2);
+
+  Serial.print(sensorValue);
+
+  Serial.print("L=");
   Serial.print(analogRead(A1));
-  Serial.print("  \t// A2 = ");
-  Serial.println(analogRead(A2));
+  Serial.print("  \t// R=");
+  Serial.print(analogRead(A2));
 
-  // Motor betätigen
-  digitalWrite(motor, HIGH);
-
-  // 1. stoppen, 2.umdrehen und 3. wieder starten
-  if (sensorValue >= 670 || sensorValue <= 414)
+  Serial.print("  \t// D=");
+  // grüner bereich
+  if (sensorValue >= endLeft + 20 || sensorValue <= endRight - 20)
   {
-    // 1. stoppen
-    digitalWrite(motor, false);
+    // Werte vergleichen
+    difference = LDRLeft - LDRRight;
 
-    // 2. umdrehen
-    delay(250);
-    direction = !direction;
-    digitalWrite(relay, direction);
-    delay(500);
+    if (abs(difference) > 15)
+    { // Schwellwert erreicht
 
-    // 3. wieder starten
-    digitalWrite(motor, true);
-    delay(500);
+      if (LDRLeft > LDRRight)
+      { // links ist heller
+        // Switch an, richtung links
+        Serial.print("toL");
+        direction = false;
+      }
+      else
+      { // rechts ist heller
+        // Switch aus, richtung rechts
+        Serial.print("toR");
+        direction = true;
+      }
+
+      digitalWrite(relay, direction);
+
+      // Motor betätigen
+      // digitalWrite(motor, true);
+    }
+    else
+    // guckt schon auf hellsten Punkt
+    {
+      // digitalWrite(motor, false);
+      Serial.print("static");
+    }
   }
+  // gelber Bereich
+  else if (
+      // falls in Wertebereich left
+      sensorValue >= (endLeft + 20) && sensorValue <= (endLeft))
+  {
+    Serial.print("toFarL");
+    if (direction == true) // richtung rechts (true), dann starten, ansonsten anhalten
+    {
+      // digitalWrite(motor, true);
+    }
+    else
+    {
+      // digitalWrite(motor, false);
+    }
+  }
+  else if (
+      // falls in Wertebereich right
+      sensorValue >= (endRight - 20) && sensorValue <= (endRight))
+  {
+    Serial.print("toFarR");
+    if (direction == false) // richtung links (false), dann starten, ansonsten anhalten
+    {
+      // digitalWrite(motor, true);
+    }
+    else
+    {
+      // digitalWrite(motor, false);
+    }
+  }
+  // roter Bereich
+  else
+  {
+    // digitalWrite(motor, false);
+    Serial.print("dead");
+  }
+  Serial.println();
 }
