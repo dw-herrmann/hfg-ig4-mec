@@ -34,6 +34,7 @@ void loop()
     digitalWrite(motor, false);
 
     // 2. umdrehen
+    delay(250);
     direction = !direction;
     digitalWrite(relay, direction);
     delay(500);
