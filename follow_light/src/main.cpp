@@ -2,11 +2,12 @@
 int motor = 8;
 bool power = false;
 int relay = 10;
-int direction = false;
-// left = false
-// right = true
-int EndlageL = false;
-int EndlageR = false;
+bool direction = false;
+// left:  false
+// right: true
+bool dirChange = direction;
+bool EndlageL = false;
+bool EndlageR = false;
 int counter = 0;
 int sensorValue = analogRead(A0);
 int LDRLeft = analogRead(A1);
@@ -119,6 +120,14 @@ void loop()
   // -- Motor Umschalten -- //
   // ---- ---- -- ---- ---- //
 
+  if (dirChange != power) // Wenn direction umgedeht wird, pause einbauen
+  {
+    digitalWrite(motor, false);
+    delay(100);
+    digitalWrite(motor, power);
+    delay(100);
+    dirChange = power;
+  }
+
   digitalWrite(relay, direction);
-  digitalWrite(motor, power);
 }
