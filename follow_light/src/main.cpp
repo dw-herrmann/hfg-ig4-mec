@@ -43,37 +43,35 @@ void loop()
 
   Serial.print("  \t// D=");
 
-  // ---- ---- ---- ---- //
-  // -- Grüner Bereich - //
-  // ---- ---- ---- ---- //
-  if (sensorValue > endLeft + 20 && sensorValue < endLeft - 20)
-  {
+  // ---- ---- --- ---- ----- //
+  // -- Richtung festlegen -- //
+  // ---- ---- --- ---- ----- //
+  if (abs(difference) > 15)
+  { // Schwellwert erreicht
 
-    if (abs(difference) > 5)
-    { // Schwellwert erreicht
-
-      if (LDRLeft > LDRRight)
-      { // links ist heller
-        // Switch an, richtung links
-        Serial.print("toL");
-        direction = true;
-      }
-      else
-      { // rechts ist heller
-        // Switch aus, richtung rechts
-        Serial.print("toR");
-        direction = false;
-      }
-
-      // Motor betätigen
-      power = true;
+    if (LDRLeft > LDRRight)
+    { // links ist heller
+      // Switch an, richtung links
+      Serial.print("toL");
+      direction = left;
     }
     else
-    // guckt schon auf hellsten Punkt
-    {
-      power = false;
-      Serial.print("static");
+    { // rechts ist heller
+      // Switch aus, richtung rechts
+      Serial.print("toR");
+      direction = right;
     }
+
+    // Motor betätigen
+    power = true;
+  }
+  else
+  // guckt schon auf hellsten Punkt
+  {
+    power = false;
+    Serial.print("static");
+  }
+
   }
   // ---- ---- ---- ---- //
   // -- Gelber Bereich - //
