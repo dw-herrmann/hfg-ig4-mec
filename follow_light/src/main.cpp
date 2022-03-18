@@ -97,7 +97,7 @@ void loop()
         power = false;
       }
     }
-    else if (sensorValue > endLeft - 20)
+    else if (sensorValue > endRight - 20)
     {
       Serial.print("toFarR");
       if (direction == left) // nach links (false) starten
