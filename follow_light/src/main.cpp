@@ -3,8 +3,8 @@ int motor = 8;
 bool power = false;
 int relay = 10;
 bool direction = false;
-// left:  false
-// right: true
+bool left = true;
+bool right = false;
 bool dirChange = direction;
 bool EndlageL = false;
 bool EndlageR = false;
@@ -72,17 +72,23 @@ void loop()
     Serial.print("static");
   }
 
+  // ---- ---- ---- ---- //
+  // -- Grüner Bereich - //
+  // ---- ---- ---- ---- //
+  if (endLeft + 20 < sensorValue && sensorValue < endRight - 20)
+  {
+    // passt alles
   }
   // ---- ---- ---- ---- //
   // -- Gelber Bereich - //
   // ---- ---- ---- ---- //
-  else if (sensorValue > endLeft && sensorValue < endLeft) // falls in Wertebereich left
+  else if (endLeft < sensorValue && sensorValue < endRight) // falls in Wertebereich left
   {
     if (sensorValue < endLeft + 20)
     {
       Serial.print("toFarL");
 
-      if (direction == true) // nach rechts (true) starten
+      if (direction == right) // nach rechts (true) starten
       {
         power = true;
       }
@@ -94,7 +100,7 @@ void loop()
     else if (sensorValue > endLeft - 20)
     {
       Serial.print("toFarR");
-      if (direction == false) // nach links (false) starten
+      if (direction == left) // nach links (false) starten
       {
         power = true;
       }
