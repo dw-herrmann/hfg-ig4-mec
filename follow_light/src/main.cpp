@@ -1,5 +1,6 @@
 #include <Arduino.h>
 int motor = 8;
+bool power = false;
 int relay = 10;
 int direction = false;
 // left = false
@@ -63,15 +64,13 @@ void loop()
         direction = false;
       }
 
-      digitalWrite(relay, direction);
-
       // Motor betätigen
-      digitalWrite(motor, true);
+      power = true;
     }
     else
     // guckt schon auf hellsten Punkt
     {
-      digitalWrite(motor, false);
+      power = false;
       Serial.print("static");
     }
   }
@@ -86,11 +85,11 @@ void loop()
 
       if (direction == true) // nach rechts (true) starten
       {
-        // digitalWrite(motor, true);
+        power = true;
       }
       else // ansonsten anhalten
       {
-        // digitalWrite(motor, false);
+        power = false;
       }
     }
     else if (sensorValue > endLeft - 20)
@@ -98,11 +97,11 @@ void loop()
       Serial.print("toFarR");
       if (direction == false) // nach links (false) starten
       {
-        // digitalWrite(motor, true);
+        power = true;
       }
       else // ansonsten anhalten
       {
-        // digitalWrite(motor, false);
+        power = false;
       }
     }
   }
@@ -111,8 +110,15 @@ void loop()
   // ---- ---- ---- ---- //
   else
   {
-    // digitalWrite(motor, false);
+    power = false;
     Serial.print("dead");
   }
   Serial.println();
+
+  // ---- ---- -- ---- ---- //
+  // -- Motor Umschalten -- //
+  // ---- ---- -- ---- ---- //
+
+  digitalWrite(relay, direction);
+  digitalWrite(motor, power);
 }
