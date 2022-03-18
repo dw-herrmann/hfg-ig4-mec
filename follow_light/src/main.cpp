@@ -116,7 +116,7 @@ void loop()
   else
   {
     power = false;
-    Serial.print("dead");
+    Serial.print("\t dead");
   }
   Serial.println();
 
@@ -133,4 +133,7 @@ void loop()
     digitalWrite(motor, power);
     dirChange = power;
   }
+
+  // bugfix 
+  digitalWrite(relay, direction);
 }
