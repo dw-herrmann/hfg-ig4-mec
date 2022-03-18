@@ -124,10 +124,9 @@ void loop()
   {
     digitalWrite(motor, false);
     delay(100);
-    digitalWrite(motor, power);
+    digitalWrite(relay, direction);
     delay(100);
+    digitalWrite(motor, power);
     dirChange = power;
   }
-
-  digitalWrite(relay, direction);
 }
